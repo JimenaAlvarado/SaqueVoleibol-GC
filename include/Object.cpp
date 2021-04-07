@@ -13,28 +13,38 @@ using namespace std;
 */
 vector<int> Object::ExtractIndexes(vector<string> tokens, int pos = 0)
 {
-    vector<string> components;     //v, vt, vn
-    vector<int> indexes; //Arreglo de números identificadores (índices)
+    vector<string> strcomponents; //v, vt, vn
+    vector<int> indexes;       //Arreglo de índices que se extraen
+
     if (pos >= 0 && pos <= 2)
     {
         for (int i = 1; i < tokens.size(); i++)
         {
-            components = Split(tokens[i], "/");
-
-            if (!components.empty())
+            //si el elemento de tokens no contiene el simbolo '/'
+            if (tokens[i].find("/", 0) == string::npos)
             {
-                switch (pos)
-                {
-                case 1: //Extraer vt: Vértice de textura
-                    indexes.push_back(stoi(components[pos]));
-                    break;
-                case 2: //Extraer vn: Vértice normal
-                    indexes.push_back(stoi(components[pos]));
-                    break;
+                indexes.push_back(stoi(tokens[i]));
+            }
+            else
+            {
+                //si el elemento de tokens tiene el simbolo '/' separar la cadena
+                strcomponents = Split(tokens[i], "/");
 
-                default: //Extraer vértice geometrico
-                    indexes.push_back(stoi(components[pos]));
-                    break;
+                if (!strcomponents.empty())
+                {
+                    switch (pos)
+                    {
+                    case 1: //Extraer vt: Vértice de textura
+                        indexes.push_back(stoi(strcomponents[pos]));
+                        break;
+                    case 2: //Extraer vn: Vértice normal
+                        indexes.push_back(stoi(strcomponents[pos]));
+                        break;
+
+                    default: //Extraer vértice geometrico
+                        indexes.push_back(stoi(strcomponents[pos]));
+                        break;
+                    }
                 }
             }
         }
@@ -107,15 +117,21 @@ Object::Object(string filename)
 
 /* Devuelve un arreglo dinámico con los vértices que forman el objeto. */
 vector<Vertex> Object::GetVerts()
-{ return this->verts; }
+{
+    return this->verts;
+}
 
 /* Devuelve un arreglo dinámico con las caras que forman el objeto. */
 vector<Face> Object::GetFaces()
-{ return this->faces; }
+{
+    return this->faces;
+}
 
 /* Devuelve el nombre del objeto. */
 string Object::GetName()
-{ return this->name; }
+{
+    return this->name;
+}
 
 /* Divide una cadena en subcadenas.
     @param str Cadena para ser dividida.
@@ -205,8 +221,8 @@ void Object::CalculateAllNormals()
 {
     for (Face &face : this->faces)
     {
-         face.SetNormal(CalculateNormal(face));
-    }   
+        face.SetNormal(CalculateNormal(face));
+    }
 }
 
 /*  Genera los coeficientes de la ecuación de un plano.
@@ -218,11 +234,11 @@ void Object::EquationPlane(Face &_face)
     _face.SetB(_face.Normal()[1]);
     _face.SetC(_face.Normal()[2]);
 
-   double D = -((_face.A() * this->verts[_face.GetVertices()[0] - 1].X()) +
-                (_face.B() * this->verts[_face.GetVertices()[0] - 1].Y()) +
-                (_face.C() * this->verts[_face.GetVertices()[0] - 1].Z()));
-    
-   _face.SetD(D);
+    double D = -((_face.A() * this->verts[_face.GetVertices()[0] - 1].X()) +
+                 (_face.B() * this->verts[_face.GetVertices()[0] - 1].Y()) +
+                 (_face.C() * this->verts[_face.GetVertices()[0] - 1].Z()));
+
+    _face.SetD(D);
 }
 
 /*  Muestra en la salida estándar el conjunto de vectores normales
@@ -246,9 +262,9 @@ void Object::PrintNormals()
 void Object::PrintEquationsOfPlane()
 {
     int i = 0;
-    for(Face face : this->faces)
+    for (Face face : this->faces)
     {
-        cout << "Ecuacion del plano F" << i+1 << ":" << endl;
+        cout << "Ecuacion del plano F" << i + 1 << ":" << endl;
         EquationPlane(face);
         cout << face.A() << "x + " << face.B() << "y + " << face.C() << "z + " << face.D() << " = 0" << endl;
         i++;
