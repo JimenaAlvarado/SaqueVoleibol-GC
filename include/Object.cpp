@@ -97,7 +97,13 @@ Object::Object(string filename)
                 else if (elements[0].compare("f") == 0)
                 {
                     vector<int> idverts(ExtractIndexes(elements));
-                    Face f(idverts);
+                    vector<Vertex> verts;
+                    //Face f(idverts);
+                    for(int i : idverts)
+                    {
+                        verts.push_back(this->verts[i-1]);
+                    }
+                    Face f(verts);
                     this->faces.push_back(f);
                 }
             }
@@ -187,58 +193,11 @@ void Object::Print()
     for (Face face : this->faces)
     {
         cout << "f ";
-        for (int id : face.GetVertices())
-            cout << id << " ";
+        for (Vertex v : face.GetVertices())
+            cout << v.GetId() << " ";
         cout << "\n";
     }
     cout << endl;
-}
-
-/*  Calcula el vector normal de un plano.
-    @param _face Plano del cual se calculará el vector normal.
-    @return Un vector en un solo renglón.
-*/
-arma::drowvec Object::CalculateNormal(Face _face)
-{
-    vector<arma::drowvec> auxverts;
-    arma::drowvec NF;
-    for (int i : _face.GetVertices())
-    {
-        arma::drowvec vertex = {verts[i - 1].X(), verts[i - 1].Y(), verts[i - 1].Z()};
-        auxverts.push_back(vertex);
-    }
-
-    //Producto cruz
-    NF = arma::cross(auxverts[1] - auxverts[0], auxverts[2] - auxverts[0]);
-
-    return NF;
-}
-
-/*  Calcula el vector normal de todos los planos que forman el objeto 
-    y las concentra en un arreglo dinámico.
-*/
-void Object::CalculateAllNormals()
-{
-    for (Face &face : this->faces)
-    {
-        face.SetNormal(CalculateNormal(face));
-    }
-}
-
-/*  Genera los coeficientes de la ecuación de un plano.
-    @param _face Plano del cual se obtiene la ecuación.
-*/
-void Object::EquationPlane(Face &_face)
-{
-    _face.SetA(_face.Normal()[0]);
-    _face.SetB(_face.Normal()[1]);
-    _face.SetC(_face.Normal()[2]);
-
-    double D = -((_face.A() * this->verts[_face.GetVertices()[0] - 1].X()) +
-                 (_face.B() * this->verts[_face.GetVertices()[0] - 1].Y()) +
-                 (_face.C() * this->verts[_face.GetVertices()[0] - 1].Z()));
-
-    _face.SetD(D);
 }
 
 /*  Muestra en la salida estándar el conjunto de vectores normales
@@ -249,7 +208,7 @@ void Object::PrintNormals()
     int i = 1;
     for (Face face : this->faces)
     {
-        cout << "Normal F" << i << ":\t" << face.Normal();
+        cout << "Normal F" << i << ":\t" << face.GetNormal();
         i++;
     }
 
@@ -265,8 +224,7 @@ void Object::PrintEquationsOfPlane()
     for (Face face : this->faces)
     {
         cout << "Ecuacion del plano F" << i + 1 << ":" << endl;
-        EquationPlane(face);
-        cout << face.A() << "x + " << face.B() << "y + " << face.C() << "z + " << face.D() << " = 0" << endl;
+        face.PrintEquationOfPlane();
         i++;
     }
     cout << endl;
