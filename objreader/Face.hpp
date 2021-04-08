@@ -15,7 +15,7 @@ class Face
 		vector<int> id_verts; //Índices de vértices que forman una cara.
 		vector<Vertex> verts; //Vértices que forman una cara
 		arma::drowvec normal; //Vector normal al plano
-
+		
 	public:
 		Face();
 		Face(vector<int> _id_verts);

@@ -8,7 +8,8 @@
 			"args": [
 				"-g",
 				"${file}",
-				"${fileDirname}/include/*.cpp",
+				"${fileDirname}/objreader/*.cpp",
+				"${fileDirname}/graphics/*.cpp",
 				"-larmadillo",
 				"-o",
 				"${fileDirname}/${fileBasenameNoExtension}"
