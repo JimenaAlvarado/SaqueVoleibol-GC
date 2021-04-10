@@ -12,7 +12,7 @@
 				"${fileDirname}/graphics/*.cpp",
 				"-larmadillo",
 				"-o",
-				"${fileDirname}/${fileBasenameNoExtension}"
+				"${fileDirname}/saquevoleibol"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"

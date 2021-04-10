@@ -3,7 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/media/sf_ShareLinux/SaqueVoleibol/graphics/",
+                "/media/sf_ShareLinux/SaqueVoleibol/objreader/"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
