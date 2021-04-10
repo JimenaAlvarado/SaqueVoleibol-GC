@@ -27,31 +27,31 @@ vector<int> Face::GetIdVertices(){ return id_verts; }
 /*  Devuelve un arreglo dinámico con los vértices que forman una cara.  */
 vector<Vertex> Face::GetVertices(){ return verts; }
 
-void Face::SetNormal(arma::drowvec _NF){ this->normal = _NF; }
+void Face::SetNormal(arma::frowvec _NF){ this->normal = _NF; }
 
-void Face::SetA(double value){ a = value; }
-void Face::SetB(double value){ b = value; }
-void Face::SetC(double value){ c = value; }
-void Face::SetD(double value){ d = value; }
+void Face::SetA(float value){ a = value; }
+void Face::SetB(float value){ b = value; }
+void Face::SetC(float value){ c = value; }
+void Face::SetD(float value){ d = value; }
 
-double Face::A(){ return a; }
-double Face::B(){ return b; }
-double Face::C(){ return c; }
-double Face::D(){ return d; }
+float Face::A(){ return a; }
+float Face::B(){ return b; }
+float Face::C(){ return c; }
+float Face::D(){ return d; }
 
 /*  Devuelve el vector normal al plano  */
-arma::drowvec Face::GetNormal(){ return normal; }
+arma::frowvec Face::GetNormal(){ return normal; }
 
 /*  Calcular el vector normal al plano  */
-arma::drowvec Face::Normal()
+arma::frowvec Face::Normal()
 {
-    vector<arma::drowvec> auxverts;
-    arma::drowvec NF;
+    vector<arma::frowvec> auxverts;
+    arma::frowvec NF;
 
     //Convertir cada vértice a un objeto vectorial
     for (Vertex v : verts)
     {
-        arma::drowvec vertex = {v.X(), v.Y(), v.Z()};
+        arma::frowvec vertex = {v.X(), v.Y(), v.Z()};
         auxverts.push_back(vertex);
     }
 

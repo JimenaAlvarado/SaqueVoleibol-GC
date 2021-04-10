@@ -64,7 +64,6 @@ Object::Object(string filename)
 {
     string line;             //Cadena de caracteres para guardar el renglón leído
     ifstream file(filename); //Flujo de entrada
-    float x, y, z;
 
     if (file.is_open())
     {
@@ -88,7 +87,6 @@ Object::Object(string filename)
                             this->name = elements[1];
                     }
                 }
-
                 else if (elements[0].compare("v") == 0)
                 {
                     this->verts.push_back(CreateVertex(elements));
@@ -98,7 +96,6 @@ Object::Object(string filename)
                 {
                     vector<int> idverts(ExtractIndexes(elements));
                     vector<Vertex> verts;
-                    //Face f(idverts);
                     for(int i : idverts)
                     {
                         verts.push_back(this->verts[i-1]);
@@ -168,7 +165,7 @@ vector<string> Object::Split(const string &str, const string &delim)
 */
 Vertex Object::CreateVertex(vector<string> tokens)
 {
-    double x, y, z;
+    float x, y, z;
     x = stod(tokens[1]);
     y = stod(tokens[2]);
     z = stod(tokens[3]);

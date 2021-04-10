@@ -5,21 +5,21 @@
 class Vertex  
 {
 	private:
-		double x, y, z;
+		float x, y, z;
 		int id;
 	public:
 		Vertex();
-		Vertex(double _x, double _y, double _z);
+		Vertex (float _x, float _y, float _z);
 		void Print();
 		void PrintId();
 		void SetId( int _id);
 		int GetId();
-		void SetX(double _x);
-		double X();
-		void SetY(double _y);
-		double Y();
-		void SetZ(double _z);
-		double Z();
+		void SetX(float _x);
+		float X();
+		void SetY(float _y);
+		float Y();
+		void SetZ(float _z);
+		float Z();
 		bool CompareTo(Vertex _v);
 };
 #endif
