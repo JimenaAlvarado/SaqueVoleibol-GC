@@ -40,7 +40,7 @@ BezierCurve::BezierCurve(Vertex _p1, Vertex _p2, Vertex _p3, Vertex _p4, float _
 BezierCurve::BezierCurve(float _yo, float _force, float angle, float _dt)
 {
     vo = _force;
-    th = angle;
+    theta = angle;
     dt = _dt;
     P1 = {0.0, _yo, 0.0};
     P2 = {CalculateVox(), CalculateVoy(), CalculateVoz()};
@@ -95,11 +95,11 @@ void BezierCurve::CreateQt()
 }
 
 float BezierCurve::CalculateVox(){
-    return vox = vo * cos( th * PI / 180.0 );
+    return vox = vo * cos( theta * PI / 180.0 );
 }
 
 float BezierCurve::CalculateVoy(){
-    return voy = vo * sin( th * PI / 180.0 );
+    return voy = vo * sin( theta * PI / 180.0 );
 }
 
 float BezierCurve::CalculateVoz(){
@@ -108,18 +108,18 @@ float BezierCurve::CalculateVoz(){
 
 float BezierCurve::CalculateMaxHorRange()
 {
-    return xmax = ( pow(vo, 2.0) * sin( (2 * th) * PI / 180) ) / G;
+    return xmax = ( pow(vo, 2.0) * sin( (2 * theta) * PI / 180) ) / G;
 }
 
 float BezierCurve::CalculateMaxVerRange()
 {
-    return ymax = ( ( pow(vo, 2.0) * pow(sin(th * PI / 180.0), 2.0)) / (2 * G) ) + P1[1];
+    return ymax = ( ( pow(vo, 2.0) * pow(sin(theta * PI / 180.0), 2.0)) / (2 * G) ) + P1[1];
   //return pow(-voy, 2.0) / (-2*G);
 }
 
 float BezierCurve::CalculateTimeRisePeak()
 {
-    return ts = ( vo * sin( th * PI / 180.0) ) / G;
+    return ts = ( vo * sin( theta * PI / 180.0) ) / G;
 }
 
 float BezierCurve::CalculateTotalTime()
@@ -133,7 +133,7 @@ arma::frowvec BezierCurve::GetP3(){ return P3; }
 arma::frowvec BezierCurve::GetP4(){ return P4; }
 float BezierCurve::Getvo(){ return vo; }
 float BezierCurve::Getdt(){ return dt; }
-float BezierCurve::Getth(){ return th; }
+float BezierCurve::Getth(){ return theta; }
 float BezierCurve::Getvox(){ return vox; }
 float BezierCurve::Getvoy(){ return voy; }
 float BezierCurve::Getvoz(){ return voz; }

@@ -23,7 +23,7 @@ class BezierCurve
 		vector<arma::frowvec> curve;	//Vector de polinomios cúbicos que definen los segmentos de curva.
 		float vo; 			//Fuerza inicial
 		float dt;			//Paso en el parametro t 
-		float th;			//Ángulo theta del vector P1P2 con respecto a la horizontal
+		float theta;			//Ángulo theta del vector P1P2 con respecto a la horizontal
 		float vox, voy, voz;		//Componentes del vector tangente a P1 (Fuerza)
 		float ts; 			//Tiempo de subida
 		float tt; 			//Tiempo total
