@@ -1,7 +1,9 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 #pragma once
-	
+
+#include <armadillo>
+
 class Vertex  
 {
 	private:
@@ -21,5 +23,6 @@ class Vertex
 		void SetZ(float _z);
 		float Z();
 		bool CompareTo(Vertex _v);
+		arma::fcolvec Homog();
 };
 #endif

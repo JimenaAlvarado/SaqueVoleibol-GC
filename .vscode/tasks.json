@@ -8,11 +8,15 @@
 			"args": [
 				"-g",
 				"${file}",
-				"${fileDirname}/objreader/*.cpp",
-				"${fileDirname}/graphics/*.cpp",
+				"${fileDirname}/include/objreader/**.cpp",
+				"${fileDirname}/include/graphics/**.cpp",
 				"-larmadillo",
+				"-lglfw",
+				"-lGLEW",
+				"-lGL",
+				"-lGLU",
 				"-o",
-				"${fileDirname}/saquevoleibol"
+				"${fileDirname}/voleibol"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"

@@ -19,12 +19,12 @@ Face::Face(vector<Vertex> _verts)
 
 }
 
-/*  Devuelve un arreglo dinámico con los índices de los vértices
+/*  Devuelve un vector con los índices de los vértices
     que forman una cara.
 */
 vector<int> Face::GetIdVertices(){ return id_verts; }
 
-/*  Devuelve un arreglo dinámico con los vértices que forman una cara.  */
+/*  Devuelve un vector con los vértices que forman una cara.  */
 vector<Vertex> Face::GetVertices(){ return verts; }
 
 void Face::SetNormal(arma::frowvec _NF){ this->normal = _NF; }

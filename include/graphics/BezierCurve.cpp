@@ -8,6 +8,30 @@ using namespace std;
 
 BezierCurve::BezierCurve() {}
 
+BezierCurve::BezierCurve(Vertex _p1, Vertex _p2, Vertex _p3, Vertex _p4, float _dt)
+{
+    P1 = {_p1.X(), _p1.Y(), _p1.Z()};
+    P2 = {_p2.X(), _p2.Y(), _p2.Z()};
+    P3 = {_p3.X(), _p3.Y(), _p3.Z()};
+    P4 = {_p4.X(), _p4.Y(), _p4.Z()};
+    dt = _dt;
+
+    //definir MB
+    MB = {{-1, 3, -3, 1},
+          {3, -6, 3, 0},
+          {-3, 3, 0, 0},
+          {1, 0, 0, 0}};
+
+    //definir GB
+    GB.resize(4,3);
+    GB.row(0) = P1;
+    GB.row(1) = P2;
+    GB.row(2) = P3;
+    GB.row(3) = P4;
+
+    CreateQt();
+}
+
 /*  Crea una curva de Bezier.
     @param _yo Punto de control inicial
 
@@ -55,8 +79,9 @@ arma::frowvec BezierCurve::CalculateP3(){
 
 void BezierCurve::CreateQt()
 {
+    arma::frowvec Qt;
     //La función Q(t) son segmentos de curva con los valores x(t),y(t),z(t)
-    //Q(t) representa los polinomios cúbicos que definen los segmentos de curva.
+    //Q(t) representa un punto de la curva
     for (float t = 0.0; t <= 1.0 + dt; t += dt)
     {
         //definir el vector T
@@ -64,7 +89,8 @@ void BezierCurve::CreateQt()
 
         /* Curvas de Bezier */
         Qt = T * MB * GB;
-        cout << "t: " << t << " " << Qt << endl;
+        curve.push_back(Qt);
+        //cout << "t: " << t << " " << Qt << endl;
     }
 }
 
@@ -115,4 +141,6 @@ float BezierCurve::Getts(){ return ts; }
 float BezierCurve::Gettt(){ return tt; }
 float BezierCurve::Getymax(){ return ymax; }
 float BezierCurve::Getxmax(){ return xmax; }
+
+vector<arma::frowvec> BezierCurve::GetCurve(){ return curve; }
 		

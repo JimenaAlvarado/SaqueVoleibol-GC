@@ -3,7 +3,10 @@
 #pragma once
 
 #include <armadillo>
+#include <vector>
 #include "../objreader/Vertex.hpp"
+
+using namespace std;
 
 const float G = 9.81; //aceleración
 	
@@ -17,7 +20,7 @@ class BezierCurve
 		arma::frowvec P4; 	// Punto final.
 		arma::fmat MB;		//Matriz base de Bezier
 		arma::fmat GB; 		//Vector de geometría de Bezier
-		arma::frowvec Qt;	//Vector de polinomios cúbicos que definen los segmentos de curva.
+		vector<arma::frowvec> curve;	//Vector de polinomios cúbicos que definen los segmentos de curva.
 		float vo; 			//Fuerza inicial
 		float dt;			//Paso en el parametro t 
 		float th;			//Ángulo theta del vector P1P2 con respecto a la horizontal
@@ -43,6 +46,7 @@ class BezierCurve
 
 		BezierCurve();
 		BezierCurve(float _yo, float _force, float angle, float _dt);
+		BezierCurve(Vertex _p1, Vertex _p2, Vertex _p3, Vertex _p4, float _dt);
 		arma::frowvec GetP1();
 		arma::frowvec GetP2();
 		arma::frowvec GetP3();
@@ -57,6 +61,7 @@ class BezierCurve
 		float Gettt();
 		float Getymax();
 		float Getxmax();
+		vector<arma::frowvec> GetCurve();
 
 };
 #endif

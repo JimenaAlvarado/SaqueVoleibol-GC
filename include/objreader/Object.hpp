@@ -28,9 +28,6 @@ class Object
 		vector<Face> GetFaces();
 		string GetName();
 		void Print();
-		arma::frowvec CalculateNormal(Face _face);
-		void CalculateAllNormals();
-		void EquationPlane(Face &_face);
 		void PrintNormals();
 		void PrintEquationsOfPlane();
 
