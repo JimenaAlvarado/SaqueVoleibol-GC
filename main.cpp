@@ -14,19 +14,19 @@ int main()
 
     Transformation tr;
     Trajectory tray;
-    Vertex p1(-0.9, -0.5, 0.0);
-    Vertex p2(-0.8, 0.5, 0.0);
-    Vertex p3(0.8, 0.5, 0.0);
-    Vertex p4(0.5, -0.5, 0.0);
-    vector <Vertex> curve = tray.curve(p1, p2, p3, p4, 0.01);
+
+    //Puntos de control
+    Vertex p1(-0.7, -0.6, 0.0);
+    Vertex p2(-0.6, 0.6, 0.0);
+    Vertex p3(0.6, 0.6, 0.0);
+    Vertex p4(0.7, -0.6, 0.0);
+    vector <Vertex> curve = tray.curve(p1, p2, p3, p4, 0.1); //Vector con los puntos que forman la trayectoria curva.
     int index_curve = 0;
 
     cout << "Curva de Bezier" << endl;
     for(Vertex v : curve)
         cout << v.X() << " " << v.Y() << " " << v.Z() << endl; 
 
-    //Aplicar transformaciones para el balón.
-    arma::fmat Mtr_ball = tr.T(-0.7, -0.6, 0.0);
     //Aplicar transformaciones para la mano.
     arma::fmat Mtr_hand = tr.T(-0.8, -0.5, 0.0) * tr.Ry(-90);
     //Aplicar transformaciones para la red.
@@ -54,6 +54,14 @@ int main()
 
     do {
         glClear( GL_COLOR_BUFFER_BIT );
+
+        //Crear un vértice para cada punto incluido en la trayectoria curva.
+        Vertex p = curve[index_curve];
+        if(index_curve < curve.size()-1)
+            index_curve++; 
+        
+        //Crear matriz de transformaciones para el balón.
+        arma::fmat Mtr_ball = tr.T(p.X(), p.Y(), p.Z());
 
         glBegin(GL_TRIANGLES);
 
