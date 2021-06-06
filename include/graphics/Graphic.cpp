@@ -3,6 +3,8 @@
 #include "Trajectory.hpp"
 #include "../objreader/Object.hpp"
 #include "../models/Ball.hpp"
+#include "../models/Hand.hpp"
+#include "../models/Net.hpp"
 
 /* Espacio gráfico. */	
 Graphic::Graphic()
@@ -37,12 +39,7 @@ int Graphic::newWindow(int _width, int _height, float _red, float _green, float 
     glfwMakeContextCurrent(this->window);
     glfwSetInputMode(this->window, GLFW_STICKY_KEYS, GL_TRUE);
 
-    GLclampf red = _red;
-    GLclampf green = _green;
-    GLclampf blue = _blue;
-    GLclampf alpha = _alpha;
-
-    glClearColor(red, green, blue, alpha);
+    glClearColor(_red, _green, _blue, _alpha);
 
     return 0;
 }
@@ -52,36 +49,31 @@ int Graphic::newWindow(int _width, int _height, float _red, float _green, float 
 */
 void Graphic::openWindow()
 {
-    //Leer archivos obj
-    Object hand("obj/hand.obj");
-    Object net("obj/net.obj");
-
     //Crear objetos
-    Ball ball2(-0.8, -0.5, 0.0, 1.0, 1.0, 1.0);
+    Ball ball(-0.8, -0.5, 0.0, 1.0, 1.0, 1.0);
+    Hand hand(-0.8, -0.5, 0.0, 1.0, 1.0, 0.0);
+    Net net(2.0, -1.2, 0.0, 0.0, 0.0, 0.0, 0.8);
 
     Transformation tr;
     Trajectory tray;
-    arma::fmat Mtr_ball;
-    arma::fmat Mtr_hand;
-    arma::fmat Mtr_net; 
 
     do {
         glClear( GL_COLOR_BUFFER_BIT );
 
-        //Aplicar transformaciones para la mano.
-        Mtr_hand = tr.T(-0.8, -0.5, 0.0) * tr.Ry(-90);
+        //  Matriz de transformación para la mano.
+        hand.setMtr(tr.T(hand.posInit()[0], hand.posInit()[1], hand.posInit()[2]) * tr.Ry(hand.angle()));
         //Aplicar transformaciones para la red.
-        Mtr_net = tr.S(0.8, 0.8, 0.8) * tr.T(2, -1.2, 0);
+        net.setMtr(tr.S(net.scale(), net.scale(), net.scale()) * tr.T(net.posInit()[0], net.posInit()[1], net.posInit()[2]));
 
         //Puntos de control
-        Vertex p1(ball2.getPosInit()[0], ball2.getPosInit()[1], ball2.getPosInit()[2]);
+        Vertex p1(ball.posInit()[0], ball.posInit()[1], ball.posInit()[2]);
         Vertex p2(-0.7, 0.6, 0.0);
         Vertex p3(0.6, 0.6, 0.0);
-        Vertex p4(0.7, ball2.getPosInit()[1], 0.0);
+        Vertex p4(0.7, ball.posInit()[1], 0.0);
         vector <Vertex> curve = tray.curve(p1, p2, p3, p4, 0.1); //Vector con los puntos que forman la trayectoria curva.
     
-        drawObject(hand, Mtr_hand, 1.0, 1.0, 0.0);
-        drawObject(net, Mtr_net, 0.0, 0.0, 0.0);
+        hand.draw();
+        net.draw();
 
         if(glfwGetKey(this->window, GLFW_KEY_ENTER) == GLFW_PRESS || keyenter_press == 1)
         {
@@ -93,23 +85,23 @@ void Graphic::openWindow()
                 index_curve++; 
                     
             //Crear matriz de transformación y dibujar balón
-            ball2.setMtr(tr.T(p.X(), p.Y(), p.Z()));
-            ball2.draw();
+            ball.setMtr(tr.T(p.X(), p.Y(), p.Z()));
+            ball.draw();
         }
 
         else{
             //Crear matriz de transformación y dibujar balón
-            ball2.setPosInit(ball2.getPosInit()[0], getyo(), ball2.getPosInit()[2]);
-            ball2.setMtr(tr.T(ball2.getPosInit()[0], ball2.getPosInit()[1], ball2.getPosInit()[2]));
-            ball2.draw();
+            ball.setPosInit(ball.posInit()[0], getyo(), ball.posInit()[2]);
+            ball.setMtr(tr.T(ball.posInit()[0], ball.posInit()[1], ball.posInit()[2]));
+            ball.draw();
         }
 
         if (glfwGetKey(this->window, GLFW_KEY_DELETE) == GLFW_PRESS)
         {
             reset();
-            ball2.setPosInit(ball2.getPosInit()[0], yo, ball2.getPosInit()[2]);
-            ball2.setMtr(tr.T(ball2.getPosInit()[0], ball2.getPosInit()[1], ball2.getPosInit()[2]));
-            ball2.draw();
+            ball.setPosInit(ball.posInit()[0], yo, ball.posInit()[2]);
+            ball.setMtr(tr.T(ball.posInit()[0], ball.posInit()[1], ball.posInit()[2]));
+            ball.draw();
         }
 
         glfwSwapBuffers(this->window);
@@ -120,22 +112,6 @@ void Graphic::openWindow()
 
     glfwTerminate();	
 }
-
-void Graphic::drawObject(Object _obj, arma::fmat _Mtr, float _red, float _green, float _blue)
-{
-    glBegin(GL_TRIANGLES);
-    glColor3f(_red, _green, _blue);
-    for(Face f : _obj.GetFaces())
-    {   
-        for(Vertex v : f.GetVertices())
-        {
-            arma::fcolvec v_tr = _Mtr * v.Homog();
-            v_tr = v_tr / v_tr[3];
-            glVertex3f(v_tr[0], v_tr[1], v_tr[3]);
-        }
-    }
-    glEnd();
-}	
 
 //Devuelve la posición sobre el eje y, cuando se usan las flechas arriba/abajo del teclado.
 float Graphic::getyo()

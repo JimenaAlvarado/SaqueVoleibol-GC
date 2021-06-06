@@ -20,7 +20,6 @@ class Graphic
 		Graphic();
 		int newWindow(int _width, int _height, float _red, float _green, float _blue, float _alpha);
 		void openWindow();
-		void drawObject(Object _obj, arma::fmat _Mtr, float _red, float _green, float _blue);
 		float getyo();
 		void reset();
 };
