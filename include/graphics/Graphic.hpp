@@ -4,6 +4,7 @@
 
 #include <GLFW/glfw3.h>
 #include <armadillo>
+#include <vector>
 #include "../objreader/Object.hpp"
 
 class Graphic  
@@ -11,6 +12,8 @@ class Graphic
 	private:
 		GLFWwindow* window; 
 		float yo = -0.5;
+		int index_curve = 0;
+		int keyenter_press = 0;
 
 	public:
 
@@ -19,5 +22,6 @@ class Graphic
 		void openWindow();
 		void drawObject(Object _obj, arma::fmat _Mtr, float _red, float _green, float _blue);
 		float getyo();
+		void reset();
 };
 #endif

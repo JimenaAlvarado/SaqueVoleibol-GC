@@ -10,6 +10,7 @@
 				"${file}",
 				"${fileDirname}/include/objreader/**.cpp",
 				"${fileDirname}/include/graphics/**.cpp",
+				"${fileDirname}/include/models/**.cpp",
 				"-larmadillo",
 				"-lglfw",
 				"-lGLEW",
